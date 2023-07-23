@@ -6,6 +6,7 @@
   <title>Recipe Book</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
   <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
@@ -31,49 +32,140 @@
       <a class="nav-link" href="#">Shopping</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Cook-Books</a>
+      <a class="nav-link disabled" href="#">Cookbooks</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Planning</a>
+      <a class="nav-link disabled" href="#">Planning</a>
     </li>
     <li class="nav-item">
       <a class="nav-link disabled">Settings</a>
     </li>
   </ul>
-  <div class="container">
-
-    <table class="table table-striped mt-4">
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col" class="text-center">Under 30</th>
-          <th scope="col" class="text-center">Posted By</th>
-          <th scope="col" class="text-center">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {%for recipe in recipes%}
-        <tr>
-          <th>{{recipe.name}}</th>
-          {%if recipe.under_30 == 1%}
-          <td class="text-center">Yes</td>
-          {%else%}
-          <td class="text-center">No</td>
-          {%endif%}
-          <td class="text-center">{{recipe.user.first_name}}</td>
-          <td class="text-center">
-            <a class="btn btn-primary" href="/recipes/{{recipe.id}}">View</a>
-            {%if session.user_id == recipe.user.id%}
-            <a class="btn btn-warning" href="/recipes/{{recipe.id}}/edit">Edit</a>
-            <a class="btn btn-danger" href="/recipes/{{recipe.id}}/delete">Delete</a>
-            {%endif%}
-          </td>
-        </tr>
-        {%endfor%}
-      </tbody>
-    </table>
 
 
+  <div class="container-fluid">
+    <div class="row view">
+
+      <div class="col-2">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 mt-2">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">All</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Favorites</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Courses
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Categories
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+
+      <div class="col-10 p-4 mt-3 view-height overflow-auto">
+
+
+
+
+        <div class="card mb-3">
+          <div class=" row g-0">
+            <div class="col-2">
+              <img src="..." class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-10">
+              <div class="card-body">
+                <h5 class="card-title">Recipe title</h5>
+                <h6 class="card-subtitle">Recipe Categoy</h6>
+                <p class="card-text">Description This is a wider card with supporting text below as a natural lead-in
+                  to
+                  additional content.
+                  This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-3">
+          <div class=" row g-0">
+            <div class="col-2">
+              <img src="..." class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-10">
+              <div class="card-body">
+                <h5 class="card-title">Recipe title</h5>
+                <h6 class="card-subtitle">Recipe Categoy</h6>
+                <p class="card-text">Description This is a wider card with supporting text below as a natural lead-in
+                  to
+                  additional content.
+                  This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-3">
+          <div class=" row g-0">
+            <div class="col-2">
+              <img src="..." class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-10">
+              <div class="card-body">
+                <h5 class="card-title">Recipe title</h5>
+                <h6 class="card-subtitle">Recipe Categoy</h6>
+                <p class="card-text">Description This is a wider card with supporting text below as a natural lead-in
+                  to
+                  additional content.
+                  This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-3">
+          <div class=" row g-0">
+            <div class="col-2">
+              <img src="..." class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-10">
+              <div class="card-body">
+                <h5 class="card-title">Recipe title</h5>
+                <h6 class="card-subtitle">Recipe Categoy</h6>
+                <p class="card-text">Description This is a wider card with supporting text below as a natural lead-in
+                  to
+                  additional content.
+                  This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+      </div>
+
+
+
+
+
+    </div>
 
   </div>
   <script src="https://kit.fontawesome.com/e71eff5305.js" crossorigin="anonymous">
