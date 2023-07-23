@@ -26,7 +26,7 @@ def home():
     return redirect("/")
   user = User.get_by_id(session['user_id'])
   sightings = Sighting.get_all()
-  return render_template("sightings.html", user=user, sightings=sightings)
+  return render_template("dashboard.html", user=user, sightings=sightings)
 
 @app.route("/logout")
 def logout():
@@ -34,7 +34,7 @@ def logout():
     session.pop('user_id')
   return redirect("/")
 
-@app.route("/users/login", methods = ["POST"])
+@app.route("/login", methods = ["POST"])
 def login():
   data = {
   **request.form

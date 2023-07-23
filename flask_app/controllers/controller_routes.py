@@ -7,5 +7,11 @@ def index():
     return redirect("/dashboard")
   return render_template("index.html")
 
+@app.route("/sign_up")
+def sign_up():
+  if 'user_id' in session:
+    return redirect("/dashboard")
+  return render_template("sign_up.html")
+
 
 
