@@ -1,7 +1,7 @@
 from flask_app import app, bcrypt
 from flask import render_template,redirect,request,session
 from flask_app.models.model_user import User
-from flask_app.models.model_recipe import Sighting
+from flask_app.models.model_recipe import Recipe
 
 #create
 @app.route("/users/create", methods = ["POST"])
@@ -25,8 +25,8 @@ def home():
   if 'user_id' not in session:
     return redirect("/")
   user = User.get_by_id(session['user_id'])
-  sightings = Sighting.get_all()
-  return render_template("dashboard.html", user=user, sightings=sightings)
+  # recipes = Recipe.get_all()
+  return render_template("dashboard.html", user=user, )
 
 @app.route("/logout")
 def logout():

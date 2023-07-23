@@ -1,6 +1,6 @@
 from flask_app.config.mysqlconnection import connectToMySQL
-from flask_app import DB
-from flask import flash
+from flask_app import DB, bcrypt
+from flask import flash, session
 import re
 from flask_app.models import model_user
 
@@ -14,62 +14,32 @@ PASSWORD_REGEX = re.compile(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$')
 '''
 NAME_REGEX = re.compile(r'^[a-zA-Z]+$')
 
-class Sighting:
+class Recipe:
 
   def __init__( self , data ):
     self.id = data['id']
-    self.location = data['location']
-    self.what_happened = data['what_happened']
-    self.date_of_sighting = data['date_of_sighting']
-    self.num_of_sasquatches = data['num_of_sasquatches']
+    self.name = data['name']
+    self.description = data['description']
+    self.instructions = data['instructions']
+    self.date_made = data['date_made']
+    self.under_30 = data['under_30']
     self.created_at = data['created_at']
     self.updated_at = data['updated_at']
 
-
-
-  #create
   @classmethod
   def save(cls, data):
-    query = "INSERT INTO sightings ( location, what_happened, date_of_sighting, num_of_sasquatches, user_id) VALUES ( %(location)s, %(what_happened)s, %(date_of_sighting)s, %(num_of_sasquatches)s, %(user_id)s);"
+    query = "INSERT INTO recipes ( name, description, instructions, date_made, under_30, user_id) VALUES ( %(name)s, %(description)s, %(instructions)s, %(date_made)s, %(under_30)s, %(user_id)s);"
     return connectToMySQL(DB).query_db( query, data )
 
   @classmethod
   def get_all(cls):
-    query = "SELECT * FROM sightings JOIN users ON sightings.user_id = users.id;"
+    query = "SELECT * FROM recipes JOIN users ON recipes.user_id = users.id;"
     results = connectToMySQL(DB).query_db( query )
 
-    all_sightings = []
+    all_recipes = []
 
     for user_dict in results:
-      sighting_instance = cls(user_dict)
-      user_data = {
-        **user_dict,
-        'id' : user_dict['users.id'],
-        'first_name' : user_dict['first_name'],
-        'last_name' : user_dict['last_name'],
-        'email' : user_dict['email'],
-        'password' : user_dict['password'],
-      }
-      user_instance = model_user.User(user_data)
-      sighting_instance.user = user_instance
-      all_sightings.append(sighting_instance)
-    return all_sightings
-
-  @classmethod
-  def get_by_id(cls, id):
-    query = "SELECT * FROM sightings WHERE id = %(id)s"
-    results = connectToMySQL(DB).query_db(query, {'id': id})
-    if results:
-      dict = results[0]
-      return cls(dict)
-
-  @classmethod
-  def get_one(cls, id):
-    query = "SELECT * FROM sightings JOIN users ON sightings.user_id = users.id WHERE sightings.id = %(id)s;"
-    results = connectToMySQL(DB).query_db(query, {'id': id})
-    if results:
-      user_dict = results[0]
-      sighting_instance = cls(user_dict)
+      recipe_instance = cls(user_dict)
       user_data = {
         'id' : user_dict['users.id'],
         'created_at' : user_dict['users.created_at'],
@@ -80,38 +50,71 @@ class Sighting:
         'password' : user_dict['password'],
       }
       user_instance = model_user.User(user_data)
-      sighting_instance.user = user_instance
-    return sighting_instance
+      recipe_instance.user = user_instance
+      all_recipes.append(recipe_instance)
+    return all_recipes
+
+  @classmethod
+  def delete(cls, id):
+    query = "DELETE FROM recipes WHERE id = %(id)s;"
+    return connectToMySQL(DB).query_db(query, {'id':id})
+
+  @classmethod
+  def get_by_id(cls, id):
+    query = "SELECT * FROM recipes WHERE id = %(id)s"
+    results = connectToMySQL(DB).query_db(query, {'id': id})
+    if results:
+      dict = results[0]
+      return cls(dict)
+
+  @classmethod
+  def get_one(cls, id):
+    query = "SELECT * FROM recipes JOIN users ON recipes.user_id = users.id WHERE recipes.id = %(id)s;"
+    results = connectToMySQL(DB).query_db(query, {'id': id})
+    if results:
+      user_dict = results[0]
+      recipe_instance = cls(user_dict)
+      user_data = {
+        'id' : user_dict['users.id'],
+        'created_at' : user_dict['users.created_at'],
+        'updated_at' : user_dict['users.updated_at'],
+        'first_name' : user_dict['first_name'],
+        'last_name' : user_dict['last_name'],
+        'email' : user_dict['email'],
+        'password' : user_dict['password'],
+      }
+      user_instance = model_user.User(user_data)
+      recipe_instance.user = user_instance
+    return recipe_instance
 
 
   @classmethod
   def update(cls, data):
-    query = "UPDATE sightings SET location = %(location)s, what_happened = %(what_happened)s, date_of_sighting = %(date_of_sighting)s, num_of_sasquatches = %(num_of_sasquatches)s WHERE id = %(id)s;"
+    query = "UPDATE recipes SET name = %(name)s, description = %(description)s, instructions = %(instructions)s, date_made = %(date_made)s, under_30 = %(under_30)s WHERE id = %(id)s;"
     return connectToMySQL(DB).query_db( query, data)
-
-  @classmethod
-  def delete(cls, id):
-    query = "DELETE FROM sightings WHERE id = %(id)s;"
-    return connectToMySQL(DB).query_db(query, {'id':id})
 
   @staticmethod
   def validate_create(data):
     is_valid = True
 
-    if len(data['location']) < 1:
-      flash("Please fill in location of the sighting.", "err_location")
+    if len(data['name']) < 1:
+      flash("Please fill in name for the recipe", "err_name")
       is_valid = False
 
-    if len(data['what_happened']) < 1:
-      flash("Please fill in what happened on the sighting.", "err_what_happened")
+    if len(data['description']) < 1:
+      flash("Please fill in description for the recipe.", "err_description")
       is_valid = False
 
-    if len(data['date_of_sighting']) < 1:
-      flash("Please fill in date of the sighting.", "err_date_of_sighting")
+    if len(data['instructions']) < 1:
+      flash("Please fill in instructions for the recipe.", "err_instructions")
       is_valid = False
 
-    if len(data['num_of_sasquatches']) < 1 or int(data['num_of_sasquatches']) < 1:
-      flash("Please fill in number valid of sasquatches on the sighting.", "err_num_of_sasquatches")
+    if len(data['date_made']) < 1:
+      flash("Please fill in date you made the dish.", "err_date_made")
+      is_valid = False
+
+    if 'under_30' not in data:
+      flash("Please select one of the options.", "err_under_30")
       is_valid = False
 
     return is_valid
