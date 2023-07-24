@@ -15,9 +15,6 @@
       <h2>Hi, {{user.first_name}}</h2>
       <h1>Recipe Book</h1>
       <div>
-        <a class="btn btn-primary" href="/recipes/new">
-          Create
-        </a>
         <a class="btn btn-outline-danger" href="/logout">
           Logout
         </a>
@@ -26,7 +23,7 @@
   </nav>
   <ul class="nav nav-underline justify-content-around">
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="#">Home</a>
+      <a class="nav-link active" aria-current="page" href="/">Home</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#">Shopping</a>
@@ -77,17 +74,21 @@
       </div>
 
 
-      <div class="col-10 p-4 mt-3 view-height overflow-auto">
+      <div class="col-10 p-4 pt-0 mt-3 view-height overflow-auto">
+        <div class="d-flex  justify-content-end">
+          <a class="btn btn-primary mb-2" href="/recipe/new">
+            <i class="fa-solid fa-plus"></i> Add New
+          </a>
+        </div>
 
 
 
-
-        <div class="card mb-3">
+        <div class="card recipe-card mb-3 overflow-auto">
           <div class=" row g-0">
-            <div class="col-2">
-              <img src="..." class="img-fluid rounded-start" alt="...">
+            <div class="col-2 p-3">
+              <img src="../static/img/fork_and_knife.png" class="img-fluid rounded-start img" alt="...">
             </div>
-            <div class="col-10">
+            <div class="col-10 ">
               <div class="card-body">
                 <h5 class="card-title">Recipe title</h5>
                 <h6 class="card-subtitle">Recipe Categoy</h6>
@@ -100,12 +101,12 @@
             </div>
           </div>
         </div>
-        <div class="card mb-3">
+        <div class="card recipe-card mb-3 overflow-auto">
           <div class=" row g-0">
-            <div class="col-2">
-              <img src="..." class="img-fluid rounded-start" alt="...">
+            <div class="col-2 p-3">
+              <img src="../static/img/fork_and_knife.png" class="img-fluid rounded-start img" alt="...">
             </div>
-            <div class="col-10">
+            <div class="col-10 ">
               <div class="card-body">
                 <h5 class="card-title">Recipe title</h5>
                 <h6 class="card-subtitle">Recipe Categoy</h6>
@@ -118,12 +119,12 @@
             </div>
           </div>
         </div>
-        <div class="card mb-3">
+        <div class="card recipe-card mb-3 overflow-auto">
           <div class=" row g-0">
-            <div class="col-2">
-              <img src="..." class="img-fluid rounded-start" alt="...">
+            <div class="col-2 p-3">
+              <img src="../static/img/fork_and_knife.png" class="img-fluid rounded-start img" alt="...">
             </div>
-            <div class="col-10">
+            <div class="col-10 ">
               <div class="card-body">
                 <h5 class="card-title">Recipe title</h5>
                 <h6 class="card-subtitle">Recipe Categoy</h6>
@@ -136,12 +137,12 @@
             </div>
           </div>
         </div>
-        <div class="card mb-3">
+        <div class="card recipe-card mb-3 overflow-auto">
           <div class=" row g-0">
-            <div class="col-2">
-              <img src="..." class="img-fluid rounded-start" alt="...">
+            <div class="col-2 p-3">
+              <img src="../static/img/fork_and_knife.png" class="img-fluid rounded-start img" alt="...">
             </div>
-            <div class="col-10">
+            <div class="col-10 ">
               <div class="card-body">
                 <h5 class="card-title">Recipe title</h5>
                 <h6 class="card-subtitle">Recipe Categoy</h6>
@@ -154,6 +155,7 @@
             </div>
           </div>
         </div>
+
 
 
 

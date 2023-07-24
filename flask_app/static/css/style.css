@@ -38,3 +38,10 @@
 .view-height{
   max-height: calc(100vh - 72px - 46px - 32px);
 }
+
+.recipe-card{
+  height: 184px;
+}
+.img{
+  height: 150px;
+}
