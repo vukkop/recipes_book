@@ -6,17 +6,18 @@
   <title>Recipe Book</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-  <link rel="stylesheet" href="../static/css/style.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}">
 </head>
 <body>
+
+
+
+
   <nav class="navbar bg-body-tertiary bg-dark-subtle">
     <div class="container-fluid">
       <h2>Hi, {{user.first_name}}</h2>
       <h1>Recipe Book</h1>
       <div>
-        <a class="btn btn-primary" href="/recipes/new">
-          Create
-        </a>
         <a class="btn btn-outline-danger" href="/logout">
           Logout
         </a>
@@ -40,6 +41,7 @@
       <a class="nav-link disabled">Settings</a>
     </li>
   </ul>
+
 
   <div class="container-fluid">
     <div class="row view">
@@ -75,16 +77,24 @@
       </div>
 
 
+
+
+
+
+
+
+
+
       <div class="col-10 p-4 mt-2 view-height overflow-auto">
 
 
-        <form action="/recipes/{{recipe.id}}/update" method="post">
+        <form action="/recipe/{{recipe.id}}/update" method="post">
           <div class="row">
-            <div class="col-7">
+            <div class="col-6">
               <div class="mb-3">
-                <label for="name" class="form-label">Name:</label>
-                <input type="text" name="name" value="{{recipe.name}}" class="form-control">
-                {% for message in get_flashed_messages(category_filter=['err_name']) %}
+                <label for="title" class="form-label">Title:</label>
+                <input type="text" name="title" value="{{recipe.title}}" class="form-control">
+                {% for message in get_flashed_messages(category_filter=['err_title']) %}
                 <p class="text-danger">
                   <small>
                     {{message}}
@@ -105,7 +115,7 @@
               </div>
               <div class="mb-3">
                 <label for="instructions" class="form-label">Instructions:</label>
-                <textarea class="form-control" name="instructions" rows="5"> {{recipe.instructions}}</textarea>
+                <textarea class="form-control" name="instructions" rows="5">{{recipe.instructions}}</textarea>
                 {% for message in get_flashed_messages(category_filter=['err_instructions']) %}
                 <p class="text-danger">
                   <small>
@@ -114,53 +124,92 @@
                 </p>
                 {% endfor %}
               </div>
+
             </div>
 
-            <div class="col-5">
-              <div class="mb-3">
-                <label for="date_made" class="form-label">Date Cooked/Made:</label>
-                <input type="date" name="date_made" value="{{recipe.date_made}}" class="form-control">
-                {% for message in get_flashed_messages(category_filter=['err_date_made']) %}
-                <p class="text-danger">
-                  <small>
-                    {{message}}
-                  </small>
-                </p>
-                {% endfor %}
-              </div>
+            <div class="col-6">
+              <div class="row">
 
-              <label class="form-label">
-                Under 30 minutes?
-              </label>
-              <div>
-                {%if recipe.under_30 == 1%}
-                <input class="form-check-input" type="radio" name="under_30" checked value="1">
-                {%else%}
-                <input class="form-check-input" type="radio" name="under_30" value="1">
-                {%endif%}
-                <label class="form-check-label mr-2">
-                  Yes
-                </label>
-                {%if recipe.under_30 == 0%}
-                <input class="form-check-input" type="radio" name="under_30" checked value="0">
-                {%else%}
-                <input class="form-check-input" type="radio" name="under_30" value="0">
-                {%endif%}
-                <label class="form-check-label">
-                  No
-                </label>
-                {% for message in get_flashed_messages(category_filter=['err_under_30']) %}
-                <p class="text-danger">
-                  <small>
-                    {{message}}
-                  </small>
-                </p>
-                {% endfor %}
+                <div class="col-6">
+                  <div class="mb-3">
+                    <label for="category" class="form-label">Category:</label>
+                    <select name="category" class="form-select" aria-label="Default select example">
+                      <option selected disabled hidden value="{{recipe.category}}">{{recipe.category}}</option>
+                      <option value="1">Vegetarian</option>
+                      <option value="2">Vegan</option>
+                      <option value="3">Gluten-Free</option>
+                      <option value="4">BBQ/Grill</option>
+                      <option value="5">Comfort Food</option>
+                      <option value="6">Healthy Choice</option>
+                      <option value="7">Family Meals</option>
+                      <option value="8">Special Occasions</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="course" class="form-label">Course:</label>
+                    <select name="course" class="form-select" aria-label="Default select example">
+                      <option selected disabled hidden value="{{recipe.course}}">{{recipe.course}}</option>
+                      <option value="1">Appetizer</option>
+                      <option value="2">Bread</option>
+                      <option value="3">Salad</option>
+                      <option value="4">Snack</option>
+                      <option value="5">Soup</option>
+                      <option value="6">Main</option>
+                      <option value="7">Dessert</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="servings" class="form-label">Servings:</label>
+                    <input type="number" name="servings" value="{{recipe.servings}}" class="form-control">
+                  </div>
+
+
+
+                </div>
+
+                <div class="col-6">
+                  <div class="mb-3">
+                    <label for="meal_of_day" class="form-label">Meal of the day:</label>
+                    <select name="meal_of_day" class="form-select" aria-label="Default select example">
+                      <option selected disabled hidden value="{{recipe.meal_of_day}}">{{recipe.meal_of_day}}</option>
+                      <option value="1">Breakfast</option>
+                      <option value="2">Lunch</option>
+                      <option value="3">Dinner</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="cook_time" class="form-label">Cook time:</label>
+                    <input type="number" name="cook_time" value="{{recipe.cook_time}}" class="form-control">
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label for="formFile" class="form-label">Upload photo:</label>
+                    <input name="image" value="{{recipe.image}}" class="form-control" type="file" id="formFile">
+                  </div>
+                  <div class="form-check mb-3">
+                    {% if recipe.is_favorite == 1 %}
+                    <input name="is_favorite" checked class="form-check-input" type="checkbox" value="1"
+                      id="flexCheckDefault">
+                    {% else %}
+                    <input name="is_favorite" class="form-check-input" type="checkbox" value="0" id="flexCheckDefault">
+                    {% endif %}
+                    <label class="form-check-label" for="flexCheckDefault">
+                      Favorite
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="d-flex justify-content-end">
-              <button class="btn btn-success">Submit</button>
-            </div>
+
+
+
+          </div>
+
+
+
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-success">Submit</button>
           </div>
         </form>
 

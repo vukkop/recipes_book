@@ -18,17 +18,23 @@ class Recipe:
 
   def __init__( self , data ):
     self.id = data['id']
-    self.name = data['name']
+    self.title = data['title']
     self.description = data['description']
     self.instructions = data['instructions']
-    self.date_made = data['date_made']
-    self.under_30 = data['under_30']
+    self.cook_time = data['cook_time']
+    self.servings = data['servings']
+    self.meal_of_day = data['meal_of_day']
+    self.category = data['category']
+    self.course = data['course']
+    self.is_favorite = data['is_favorite']
+    self.image = data['image']
     self.created_at = data['created_at']
     self.updated_at = data['updated_at']
 
   @classmethod
   def save(cls, data):
-    query = "INSERT INTO recipes ( name, description, instructions, date_made, under_30, user_id) VALUES ( %(name)s, %(description)s, %(instructions)s, %(date_made)s, %(under_30)s, %(user_id)s);"
+    query = """INSERT INTO recipes ( title, description, instructions, cook_time, servings, meal_of_day, category, course, is_favorite, image, user_id)
+              VALUES ( %(title)s, %(description)s, %(instructions)s, %(cook_time)s, %(servings)s, %(meal_of_day)s, %(category)s, %(course)s, %(is_favorite)s, %(image)s, %(user_id)s);"""
     return connectToMySQL(DB).query_db( query, data )
 
   @classmethod
@@ -90,7 +96,9 @@ class Recipe:
 
   @classmethod
   def update(cls, data):
-    query = "UPDATE recipes SET name = %(name)s, description = %(description)s, instructions = %(instructions)s, date_made = %(date_made)s, under_30 = %(under_30)s WHERE id = %(id)s;"
+    query = """UPDATE recipes
+      SET name = %(name)s, description = %(description)s, instructions = %(instructions)s, cook_time = %(cook_time)s, servings = %(servings)s, meal_of_day = %(meal_of_day)s, category = %(category)s, course = %(course)s, is_favorite = %(is_favorite)s, image = %(image)s
+      WHERE id = %(id)s;"""
     return connectToMySQL(DB).query_db( query, data)
 
   @staticmethod

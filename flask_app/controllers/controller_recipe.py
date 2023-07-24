@@ -17,14 +17,16 @@ def create_recipe():
     **request.form,
     'user_id' : session['user_id']
   }
-  if not Recipe.validate_create(data):
-    return redirect('/recipe/new')
+  if 'is_favorite' not in data:
+    data['is_favorite'] = 0
+  # if not Recipe.validate_create(data):
+  #   return redirect('/recipe/new')
 
   Recipe.save(data)
   return redirect('/dashboard')
 
 #read
-@app.route("/show/<int:id>")
+@app.route("/recipe/show/<int:id>")
 def display_recipe(id):
   if 'user_id' not in session:
     return redirect("/")
@@ -33,7 +35,7 @@ def display_recipe(id):
   return render_template("display_recipe.html", recipe=recipe, user=user)
 
 #update
-@app.route("/edit/<int:id>")
+@app.route("/recipe/edit/<int:id>")
 def edit_recipe(id):
   if 'user_id' not in session:
     return redirect("/")
@@ -48,8 +50,8 @@ def update_recipe(id):
   data = {
     **request.form,
     'id': id}
-  if not Recipe.validate_create(data):
-    return redirect(f'/recipe/{id}/edit')
+  # if not Recipe.validate_create(data):
+  #   return redirect(f'/recipe/{id}/edit')
   Recipe.update(data)
   return redirect("/dashboard")
 
