@@ -79,14 +79,14 @@
       </div>
 
 
-      <div class="col-10 p-4 mt-2 view-height overflow-auto">
+      <div class="col-10 px-4 mt-2 view-height overflow-auto">
 
 
 
         <form action="/recipe/create" method="post">
           <div class="row">
             <div class="col-6">
-              <div class="mb-3">
+              <div class="mb-2">
                 <label for="title" class="form-label">Title:</label>
                 <input type="text" name="title" class="form-control">
                 {% for message in get_flashed_messages(category_filter=['err_title']) %}
@@ -97,7 +97,7 @@
                 </p>
                 {% endfor %}
               </div>
-              <div class="mb-3">
+              <div class="mb-2">
                 <label for="description" class="form-label">Description:</label>
                 <textarea class="form-control" name="description" rows="3"></textarea>
                 {% for message in get_flashed_messages(category_filter=['err_description']) %}
@@ -108,7 +108,7 @@
                 </p>
                 {% endfor %}
               </div>
-              <div class="mb-3">
+              <div class="mb-2">
                 <label for="instructions" class="form-label">Instructions:</label>
                 <textarea class="form-control" name="instructions" rows="5"></textarea>
                 {% for message in get_flashed_messages(category_filter=['err_instructions']) %}
@@ -120,13 +120,14 @@
                 {% endfor %}
               </div>
 
-            </div>
 
-            <div class="col-6">
+
+
+
               <div class="row">
 
                 <div class="col-6">
-                  <div class="mb-3">
+                  <div class="mb-2">
                     <label for="category" class="form-label">Category:</label>
                     <select name="category" class="form-select" aria-label="Default select example">
                       <option selected disabled hidden>Open this select menu</option>
@@ -140,7 +141,7 @@
                       <option value="8">Special Occasions</option>
                     </select>
                   </div>
-                  <div class="mb-3">
+                  <div class="mb-2">
                     <label for="course" class="form-label">Course:</label>
                     <select name="course" class="form-select" aria-label="Default select example">
                       <option selected disabled hidden>Open this select menu</option>
@@ -154,7 +155,7 @@
                     </select>
                   </div>
                   <label for="servings" class="form-label">Servings:</label>
-                  <div class="input-group mb-3">
+                  <div class="input-group mb-2">
                     <input type="number" name="servings" class="form-control">
                     <span class="input-group-text" id="basic-addon">portions</span>
                   </div>
@@ -164,7 +165,7 @@
                 </div>
 
                 <div class="col-6">
-                  <div class="mb-3">
+                  <div class="mb-2">
                     <label for="meal_of_day" class="form-label">Meal of the day:</label>
                     <select name="meal_of_day" class="form-select" aria-label="Default select example">
                       <option selected disabled hidden>Open this select menu</option>
@@ -174,7 +175,7 @@
                     </select>
                   </div>
                   <label for="cook_time" class="form-label">Cook time:</label>
-                  <div class="input-group mb-3">
+                  <div class="input-group mb-2">
                     <input type="number" name="cook_time" class="form-control">
                     <span class="input-group-text" id="basic-addon">minutes</span>
                   </div>
@@ -182,18 +183,52 @@
                 <div class="col-12">
 
                   <label for="formFile" class="form-label">Upload photo:</label>
-                  <div class="input-group mb-3">
+                  <div class="input-group mb-2">
                     <input name="image" class="form-control" type="file" id="formFile">
                     <button type="button" class="btn btn-outline-primary">Upload</button>
                   </div>
 
-                  <div class="form-check mb-3">
+                  <div class="form-check mb-2">
                     <input name="is_favorite" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
                     <label class="form-check-label" for="flexCheckDefault">
                       Favorite
                     </label>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="row">
+                <div class="col-6">
+                  <label>Required Ingredients:</label>
+                </div>
+                <div class="col-6">
+                  <label for="ingredient" class="form-label">Ingredient:</label>
+                  <select name="meal_of_day" class="form-select mb-2" aria-label="Default select example">
+                    <option selected disabled hidden></option>
+                    <option value="1">Ingredient 1</option>
+                    <option value="2">Ingredient 2</option>
+                    <option value="3">Ingredient 3</option>
+                  </select>
+                  <div class="row">
+                    <div class="col-8">
+                      <label for="quantity" class="form-label">Quantity:</label>
+                      <input type="number" name="title" value="" class="form-control">
+                    </div>
+                    <div class="col-4">
+                      <label for="unit" class="form-label">Unit:</label>
+                      <select name="meal_of_day" class="form-select" aria-label="Default select example">
+                        <option selected disabled hidden></option>
+                        <option value="1">cup</option>
+                        <option value="2">ml</option>
+                        <option value="3">g</option>
+                      </select>
+                    </div>
+                  </div>
+
+                </div>
+
               </div>
             </div>
 
