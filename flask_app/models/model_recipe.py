@@ -1,7 +1,9 @@
+from flask_app import app
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask_app import DB, bcrypt
 from flask import flash, session
-import re
+from flask import jsonify
+import re, os, cloudinary
 from flask_app.models import model_user
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
@@ -97,9 +99,21 @@ class Recipe:
   @classmethod
   def update(cls, data):
     query = """UPDATE recipes
-      SET name = %(name)s, description = %(description)s, instructions = %(instructions)s, cook_time = %(cook_time)s, servings = %(servings)s, meal_of_day = %(meal_of_day)s, category = %(category)s, course = %(course)s, is_favorite = %(is_favorite)s, image = %(image)s
+      SET title = %(title)s, description = %(description)s, instructions = %(instructions)s, cook_time = %(cook_time)s, servings = %(servings)s, meal_of_day = %(meal_of_day)s, category = %(category)s, course = %(course)s, is_favorite = %(is_favorite)s, image = %(image)s
       WHERE id = %(id)s;"""
     return connectToMySQL(DB).query_db( query, data)
+
+
+  # @staticmethod
+  # def upload(file):
+  #   cloudinary.config(cloud_name = os.getenv('CLOUD_NAME'), api_key=os.getenv('API_KEY'),
+  #   api_secret=os.getenv('API_SECRET'))
+
+  #   if file:
+  #     upload_result = cloudinary.uploader.upload(file)
+  #     app.logger.info(upload_result)
+  #     print(jsonify(upload_result))
+  #     return jsonify(upload_result)
 
   @staticmethod
   def validate_create(data):

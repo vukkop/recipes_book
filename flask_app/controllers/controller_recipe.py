@@ -2,6 +2,7 @@ from flask_app import app
 from flask import render_template,redirect,request,session
 from flask_app.models.model_user import User
 from flask_app.models.model_recipe import Recipe
+import cloudinary
 
 #create
 @app.route("/recipe/new")
@@ -11,8 +12,15 @@ def new_recipe():
   user = User.get_by_id(session['user_id'])
   return render_template("new_recipe.html",user=user)
 
+# @app.route("/img/upload", methods = ["POST"])
+# def upload_img():
+#   file_to_upload = request.files['image']
+#   app.logger.info('%s file_to_upload', file_to_upload)
+#   Recipe.upload(file_to_upload)
+
 @app.route("/recipe/create", methods = ["POST"])
 def create_recipe():
+
   data = {
     **request.form,
     'user_id' : session['user_id']
