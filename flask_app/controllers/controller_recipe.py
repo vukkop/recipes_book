@@ -92,6 +92,8 @@ def update_recipe(id):
   data = {
     **request.form,
     'id': id}
+  if 'is_favorite' not in data:
+    data['is_favorite'] = 0
   # if not Recipe.validate_create(data):
   #   return redirect(f'/recipe/{id}/edit')
   Recipe.update(data)

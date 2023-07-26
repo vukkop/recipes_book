@@ -24,7 +24,8 @@ def create():
 def home():
   if 'user_id' not in session:
     return redirect("/")
-  session.pop("recipe_id")
+  if "recipe_id" in session:
+    session.pop("recipe_id")
   user = User.get_by_id(session['user_id'])
   recipes = Recipe.get_all()
   return render_template("dashboard.html", user=user, recipes=recipes )

@@ -33,6 +33,7 @@ class Recipe:
     self.created_at = data['created_at']
     self.updated_at = data['updated_at']
 
+#create
   @classmethod
   def save(cls, data):
     query = """INSERT INTO recipes ( title, description, instructions, cook_time, servings, meal_of_day, category, course, is_favorite, image, user_id)
@@ -46,6 +47,7 @@ class Recipe:
               VALUES ( %(recipe_id)s, %(id)s, %(unit)s, %(quantity)s);"""
     return connectToMySQL(DB).query_db( query, data )
 
+#read
   @classmethod
   def get_all(cls):
     query = "SELECT * FROM recipes JOIN users ON recipes.user_id = users.id;"
@@ -69,10 +71,6 @@ class Recipe:
       all_recipes.append(recipe_instance)
     return all_recipes
 
-  @classmethod
-  def delete(cls, id):
-    query = "DELETE FROM recipes WHERE id = %(id)s;"
-    return connectToMySQL(DB).query_db(query, {'id':id})
 
   @classmethod
   def get_recipe_ingredients(cls, id):
@@ -116,7 +114,7 @@ class Recipe:
       recipe_instance.user = user_instance
     return recipe_instance
 
-
+#update
   @classmethod
   def update(cls, data):
     query = """UPDATE recipes
@@ -135,6 +133,14 @@ class Recipe:
   #     app.logger.info(upload_result)
   #     print(jsonify(upload_result))
   #     return jsonify(upload_result)
+
+#delete
+  @classmethod
+  def delete(cls, id):
+    query_c = "DELETE FROM recipes_has_ingredients WHERE recipe_id = %(id)s;"
+    connectToMySQL(DB).query_db(query_c, {'id':id})
+    query_p = "DELETE FROM recipes WHERE id = %(id)s;"
+    return connectToMySQL(DB).query_db(query_p, {'id':id})
 
   @staticmethod
   def validate_create(data):

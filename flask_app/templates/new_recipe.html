@@ -48,7 +48,7 @@
   <div class="container-fluid">
     <div class="row view">
 
-      <div class="col-2">
+      <div class="col-2 bg-light ">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 mt-2">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">All</a>
@@ -127,27 +127,27 @@
                     <label for="category" class="form-label">Category:</label>
                     <select name="category" class="form-select" aria-label="Default select example">
                       <option selected disabled hidden>{{recipe.category}}</option>
-                      <option value="1">Vegetarian</option>
-                      <option value="2">Vegan</option>
-                      <option value="3">Gluten-Free</option>
-                      <option value="4">BBQ/Grill</option>
-                      <option value="5">Comfort Food</option>
-                      <option value="6">Healthy Choice</option>
-                      <option value="7">Family Meals</option>
-                      <option value="8">Special Occasions</option>
+                      <option value="Vegetarian">Vegetarian</option>
+                      <option value="Vegan">Vegan</option>
+                      <option value="Gluten-Free">Gluten-Free</option>
+                      <option value="BBQ/Grill">BBQ/Grill</option>
+                      <option value="Comfort">Comfort</option>
+                      <option value="Healthy">Healthy</option>
+                      <option value="Family">Family</option>
+
                     </select>
                   </div>
                   <div class="mb-2">
                     <label for="course" class="form-label">Course:</label>
                     <select name="course" class="form-select" aria-label="Default select example">
                       <option selected disabled hidden>{{recipe.course}}</option>
-                      <option value="1">Appetizer</option>
-                      <option value="2">Bread</option>
-                      <option value="3">Salad</option>
-                      <option value="4">Snack</option>
-                      <option value="5">Soup</option>
-                      <option value="6">Main</option>
-                      <option value="7">Dessert</option>
+                      <option value="Appetizer">Appetizer</option>
+                      <option value="Bread">Bread</option>
+                      <option value="Salad">Salad</option>
+                      <option value="Snack">Snack</option>
+                      <option value="Soup">Soup</option>
+                      <option value="Main">Main</option>
+                      <option value="Dessert">Dessert</option>
                     </select>
                   </div>
                   <label for="servings" class="form-label">Servings:</label>
@@ -165,9 +165,9 @@
                     <label for="meal_of_day" class="form-label">Meal of the day:</label>
                     <select name="meal_of_day" class="form-select" aria-label="Default select example">
                       <option selected disabled hidden>{{recipe.meal_of_day}}</option>
-                      <option value="1">Breakfast</option>
-                      <option value="2">Lunch</option>
-                      <option value="3">Dinner</option>
+                      <option value="Breakfast">Breakfast</option>
+                      <option value="Lunch">Lunch</option>
+                      <option value="Dinner">Dinner</option>
                     </select>
                   </div>
                   <label for="cook_time" class="form-label">Cook time:</label>
@@ -191,7 +191,11 @@
                     </label>
                   </div>
                 </div>
-                <button class="btn btn-success">Submit Recipe</button>
+                {% if 'recipe_id' not in session %}
+                <div>
+                  <button class="btn btn-primary float-end">Submit Recipe</button>
+                </div>
+                {%endif%}
               </div>
         </form>
 
@@ -239,16 +243,21 @@
                 </select>
               </div>
             </div>
-            <button class="btn btn-primary" id="ingredients-btn">Add</button>
+            <div>
+
+              <button class="btn btn-primary float-end mt-2" id="ingredients-btn">Add Ingredient</button>
+            </div>
             </form>
             {% endif %}
-            {% if session['recipe_id'] %}
-            <a href="/dashboard" class="btn btn-dark"> SAVE ALL</a>
-            {%endif%}
 
           </div>
 
         </div>
+      </div>
+      <div class="text-center mt-2">
+        {% if session['recipe_id'] %}
+        <a href="/dashboard" class="btn btn-success btn-lg"> SAVE ALL</a>
+        {%endif%}
       </div>
 
 
