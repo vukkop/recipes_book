@@ -24,6 +24,7 @@ def create():
 def home():
   if 'user_id' not in session:
     return redirect("/")
+  session.pop("recipe_id")
   user = User.get_by_id(session['user_id'])
   recipes = Recipe.get_all()
   return render_template("dashboard.html", user=user, recipes=recipes )
@@ -31,7 +32,7 @@ def home():
 @app.route("/logout")
 def logout():
   if 'user_id' in session:
-    session.pop('user_id')
+    session.clear()
   return redirect("/")
 
 @app.route("/login", methods = ["POST"])

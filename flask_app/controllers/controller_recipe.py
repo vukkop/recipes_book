@@ -1,6 +1,7 @@
 from flask_app import app
 from flask import render_template,redirect,request,session
 from flask_app.models.model_user import User
+from flask_app.models.model_ingredient import Ingredient
 from flask_app.models.model_recipe import Recipe
 import cloudinary
 
@@ -9,8 +10,23 @@ import cloudinary
 def new_recipe():
   if 'user_id' not in session:
     return redirect("/")
+  if 'recipe_id' not in session:
+    recipe = {
+      "title": "",
+      "description": "",
+      "instructions": "",
+      "category": "",
+      "meal_of_day": "",
+      "course": "",
+      "cook_time": "",
+      "servings": "",
+    }
+  else:
+    recipe = Recipe.get_by_id(session['recipe_id'])
+
   user = User.get_by_id(session['user_id'])
-  return render_template("new_recipe.html",user=user)
+  ingredients = Ingredient.get_all()
+  return render_template("new_recipe.html",user=user, ingredients=ingredients, recipe=recipe)
 
 # @app.route("/img/upload", methods = ["POST"])
 # def upload_img():
@@ -23,15 +39,33 @@ def create_recipe():
 
   data = {
     **request.form,
-    'user_id' : session['user_id']
+    'user_id' : session['user_id'],
   }
+
   if 'is_favorite' not in data:
     data['is_favorite'] = 0
-  # if not Recipe.validate_create(data):
-  #   return redirect('/recipe/new')
+  # # if not Recipe.validate_create(data):
+  # #   return redirect('/recipe/new')
 
-  Recipe.save(data)
-  return redirect('/dashboard')
+  recipe_id = Recipe.save(data)
+  session['recipe_id'] = recipe_id
+  return redirect('/recipe/new')
+
+@app.route("/add_ingredient", methods = ["POST"])
+def add_ingredient():
+  ing = Ingredient.get_by_id(request.form["id"])
+  data = {
+          "id": ing.id,
+          "name": ing.name,
+          "quantity": request.form["quantity"],
+          "unit": request.form["unit"],
+          "recipe_id" : session["recipe_id"]
+          }
+  Recipe.add_ingredient(data)
+
+  return redirect("/recipe/new")
+
+
 
 #read
 @app.route("/recipe/show/<int:id>")

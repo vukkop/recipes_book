@@ -4,7 +4,7 @@ from flask_app import DB, bcrypt
 from flask import flash, session
 from flask import jsonify
 import re, os, cloudinary
-from flask_app.models import model_user
+from flask_app.models import model_user, model_ingredient
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 PASSWORD_REGEX = re.compile(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$')
@@ -40,6 +40,13 @@ class Recipe:
     return connectToMySQL(DB).query_db( query, data )
 
   @classmethod
+  def add_ingredient(cls, data):
+    print(data)
+    query = """INSERT INTO recipes_has_ingredients ( recipe_id, ingredient_id, unit, quantity)
+              VALUES ( %(recipe_id)s, %(id)s, %(unit)s, %(quantity)s);"""
+    return connectToMySQL(DB).query_db( query, data )
+
+  @classmethod
   def get_all(cls):
     query = "SELECT * FROM recipes JOIN users ON recipes.user_id = users.id;"
     results = connectToMySQL(DB).query_db( query )
@@ -68,12 +75,26 @@ class Recipe:
     return connectToMySQL(DB).query_db(query, {'id':id})
 
   @classmethod
+  def get_recipe_ingredients(cls, id):
+    query = "SELECT * FROM recipes_has_ingredients WHERE recipe_id = %(id)s"
+    results = connectToMySQL(DB).query_db(query, {'id':id})
+    i_list = []
+    for one in results:
+      ing = model_ingredient.Ingredient.get_by_id(one['ingredient_id'])
+      ing.quantity = one["quantity"]
+      ing.unit = one["unit"]
+      i_list.append(ing)
+    return i_list
+
+  @classmethod
   def get_by_id(cls, id):
     query = "SELECT * FROM recipes WHERE id = %(id)s"
     results = connectToMySQL(DB).query_db(query, {'id': id})
     if results:
       dict = results[0]
-      return cls(dict)
+      recipe = cls(dict)
+      recipe.ingredients = cls.get_recipe_ingredients(id)
+      return recipe
 
   @classmethod
   def get_one(cls, id):

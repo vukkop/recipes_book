@@ -84,11 +84,12 @@
 
 
         <form action="/recipe/create" method="post">
+
           <div class="row">
             <div class="col-6">
               <div class="mb-2">
                 <label for="title" class="form-label">Title:</label>
-                <input type="text" name="title" class="form-control">
+                <input type="text" value="{{recipe.title}}" name="title" class="form-control">
                 {% for message in get_flashed_messages(category_filter=['err_title']) %}
                 <p class="text-danger">
                   <small>
@@ -99,7 +100,7 @@
               </div>
               <div class="mb-2">
                 <label for="description" class="form-label">Description:</label>
-                <textarea class="form-control" name="description" rows="3"></textarea>
+                <textarea class="form-control" name="description" rows="3">{{recipe.description}}</textarea>
                 {% for message in get_flashed_messages(category_filter=['err_description']) %}
                 <p class="text-danger">
                   <small>
@@ -110,7 +111,7 @@
               </div>
               <div class="mb-2">
                 <label for="instructions" class="form-label">Instructions:</label>
-                <textarea class="form-control" name="instructions" rows="5"></textarea>
+                <textarea class="form-control" name="instructions" rows="5">{{recipe.instructions}}</textarea>
                 {% for message in get_flashed_messages(category_filter=['err_instructions']) %}
                 <p class="text-danger">
                   <small>
@@ -119,18 +120,13 @@
                 </p>
                 {% endfor %}
               </div>
-
-
-
-
-
               <div class="row">
 
                 <div class="col-6">
                   <div class="mb-2">
                     <label for="category" class="form-label">Category:</label>
                     <select name="category" class="form-select" aria-label="Default select example">
-                      <option selected disabled hidden>Open this select menu</option>
+                      <option selected disabled hidden>{{recipe.category}}</option>
                       <option value="1">Vegetarian</option>
                       <option value="2">Vegan</option>
                       <option value="3">Gluten-Free</option>
@@ -144,7 +140,7 @@
                   <div class="mb-2">
                     <label for="course" class="form-label">Course:</label>
                     <select name="course" class="form-select" aria-label="Default select example">
-                      <option selected disabled hidden>Open this select menu</option>
+                      <option selected disabled hidden>{{recipe.course}}</option>
                       <option value="1">Appetizer</option>
                       <option value="2">Bread</option>
                       <option value="3">Salad</option>
@@ -156,7 +152,7 @@
                   </div>
                   <label for="servings" class="form-label">Servings:</label>
                   <div class="input-group mb-2">
-                    <input type="number" name="servings" class="form-control">
+                    <input type="number" value="{{recipe.servings}}" name="servings" class="form-control">
                     <span class="input-group-text" id="basic-addon">portions</span>
                   </div>
 
@@ -168,7 +164,7 @@
                   <div class="mb-2">
                     <label for="meal_of_day" class="form-label">Meal of the day:</label>
                     <select name="meal_of_day" class="form-select" aria-label="Default select example">
-                      <option selected disabled hidden>Open this select menu</option>
+                      <option selected disabled hidden>{{recipe.meal_of_day}}</option>
                       <option value="1">Breakfast</option>
                       <option value="2">Lunch</option>
                       <option value="3">Dinner</option>
@@ -184,76 +180,97 @@
 
                   <label for="formFile" class="form-label">Upload photo:</label>
                   <div class="input-group mb-2">
-                    <input name="image" class="form-control" type="file" id="formFile">
+                    <input name="image" value="{{recipe.image}}" class="form-control" type="file" id="formFile">
                     <button type="button" class="btn btn-outline-primary">Upload</button>
                   </div>
 
                   <div class="form-check mb-2">
                     <input name="is_favorite" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
+                    <label class="form-check-label" value="{{recipe.is_favorite}}" for="flexCheckDefault">
                       Favorite
                     </label>
                   </div>
                 </div>
+                <button class="btn btn-success">Submit Recipe</button>
               </div>
-            </div>
-
-            <div class="col-6">
-              <div class="row">
-                <div class="col-6">
-                  <label>Required Ingredients:</label>
-                </div>
-                <div class="col-6">
-                  <label for="ingredient" class="form-label">Ingredient:</label>
-                  <select name="meal_of_day" class="form-select mb-2" aria-label="Default select example">
-                    <option selected disabled hidden></option>
-                    <option value="1">Ingredient 1</option>
-                    <option value="2">Ingredient 2</option>
-                    <option value="3">Ingredient 3</option>
-                  </select>
-                  <div class="row">
-                    <div class="col-8">
-                      <label for="quantity" class="form-label">Quantity:</label>
-                      <input type="number" name="title" value="" class="form-control">
-                    </div>
-                    <div class="col-4">
-                      <label for="unit" class="form-label">Unit:</label>
-                      <select name="meal_of_day" class="form-select" aria-label="Default select example">
-                        <option selected disabled hidden></option>
-                        <option value="1">cup</option>
-                        <option value="2">ml</option>
-                        <option value="3">g</option>
-                      </select>
-                    </div>
-                  </div>
-
-                </div>
-
-              </div>
-            </div>
-
-
-
-          </div>
-
-
-
-          <div class="d-flex justify-content-end">
-            <button class="btn btn-success">Submit</button>
-          </div>
         </form>
-
 
 
       </div>
 
+      <div class="col-6">
+        <div class="row">
+          <div class="col-6">
+            {% if session['recipe_id'] %}
+            <form action="/add_ingredient" method="post">
+              <label>Required Ingredients:</label>
 
+              <div id="ingredientsList">
+                {% if recipe.ingredients %}
+                {% for ingredient in recipe.ingredients %}
+                <p>{{ingredient.name}} - {{ingredient.quantity}} {{ingredient.unit}}</p>
+                {%endfor%}
+                {%endif%}
+              </div>
+
+          </div>
+          <div class="col-6">
+
+            <label for="id" class="form-label">Ingredient:</label>
+            <select name="id" id="ingredient" class="form-select mb-2" aria-label="Default select example">
+              <option selected disabled hidden>Select</option>
+              {% for ingredient in ingredients %}
+              <option value="{{ ingredient.id }}" ingredientId="{{ingredient.id}}">{{ ingredient.name }}
+              </option>
+              {% endfor %}
+            </select>
+            <div class="row">
+              <div class="col-8">
+                <label for="quantity" class="form-label">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" class="form-control">
+              </div>
+              <div class="col-4">
+                <label for="unit" class="form-label">Unit:</label>
+                <select name="unit" id="unit" class="form-select" aria-label="Default select example">
+                  <option selected disabled hidden></option>
+                  <option value="cup">cup</option>
+                  <option value="ml">ml</option>
+                  <option value="g">g</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="ingredients-btn">Add</button>
+            </form>
+            {% endif %}
+            {% if session['recipe_id'] %}
+            <a href="/dashboard" class="btn btn-dark"> SAVE ALL</a>
+            {%endif%}
+
+          </div>
+
+        </div>
+      </div>
 
 
 
     </div>
 
+
+
+
+
+
+
   </div>
+
+
+
+
+
+  </div>
+
+  </div>
+
   <script src="https://kit.fontawesome.com/e71eff5305.js" crossorigin="anonymous">
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
