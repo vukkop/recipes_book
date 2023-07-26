@@ -32,11 +32,11 @@
 }
 
 .view{
-  max-height: calc(100vh - 72px - 46px );
+  max-height: calc(100vh - 56px - 46px );
 }
 
 .view-height{
-  max-height: calc(100vh - 72px - 46px - 32px);
+  max-height: calc(100vh - 56px - 46px - 32px);
 }
 
 .recipe-card{

@@ -66,7 +66,6 @@ def add_ingredient():
   return redirect("/recipe/new")
 
 
-
 #read
 @app.route("/recipe/show/<int:id>")
 def display_recipe(id):
@@ -83,12 +82,15 @@ def edit_recipe(id):
     return redirect("/")
   user = User.get_by_id(session['user_id'])
   recipe = Recipe.get_by_id(id)
-  return render_template("edit_recipe.html", recipe=recipe, user=user)
+  session['recipe_id'] = id
+  ingredients = Ingredient.get_all()
+  return render_template("edit_recipe.html", recipe=recipe, user=user, ingredients=ingredients)
 
 @app.route("/recipe/<int:id>/update", methods = ["POST"])
 def update_recipe(id):
   if 'user_id' not in session:
     return redirect("/")
+
   data = {
     **request.form,
     'id': id}
@@ -97,7 +99,7 @@ def update_recipe(id):
   # if not Recipe.validate_create(data):
   #   return redirect(f'/recipe/{id}/edit')
   Recipe.update(data)
-  return redirect("/dashboard")
+  return redirect(f"/recipe/edit/{id}")
 
 #delete
 @app.route("/recipe/<int:id>/delete")

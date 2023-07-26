@@ -48,7 +48,7 @@
   <div class="container-fluid">
     <div class="row view">
 
-      <div class="col-2 bg-light ">
+      <div class="col-2">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 mt-2">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">All</a>
@@ -81,7 +81,7 @@
 
       <div class="col-10 px-4 mt-2 view-height overflow-auto">
 
-
+        <h3>New:</h3>
 
         <form action="/recipe/create" method="post">
 
@@ -209,13 +209,13 @@
             <form action="/add_ingredient" method="post">
               <label>Required Ingredients:</label>
 
-              <div id="ingredientsList">
+              <ul id="ingredientsList">
                 {% if recipe.ingredients %}
                 {% for ingredient in recipe.ingredients %}
-                <p>{{ingredient.name}} - {{ingredient.quantity}} {{ingredient.unit}}</p>
+                <li>{{ingredient.name}} - {{ingredient.quantity}} {{ingredient.unit}}</li>
                 {%endfor%}
                 {%endif%}
-              </div>
+              </ul>
 
           </div>
           <div class="col-6">
@@ -244,7 +244,6 @@
               </div>
             </div>
             <div>
-
               <button class="btn btn-primary float-end mt-2" id="ingredients-btn">Add Ingredient</button>
             </div>
             </form>

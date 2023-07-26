@@ -84,7 +84,7 @@
 
       <div class="col-10 px-4 mt-2 view-height overflow-auto">
 
-
+        <h3>Edit:</h3>
         <form action="/recipe/{{recipe.id}}/update" method="post">
           <div class="row">
             <div class="col-6">
@@ -190,57 +190,70 @@
                     </label>
                   </div>
                 </div>
+                <div class="d-flex justify-content-end">
+                  <button class="btn btn-primary">Update Recipe</button>
+                </div>
               </div>
 
             </div>
-
-
-
-            <div class="col-6">
-              <div class="row">
-                <div class="col-6">
-                  <label>Required Ingredients:</label>
-                </div>
-                <div class="col-6">
-                  <label for="ingredient" class="form-label">Ingredient:</label>
-                  <select name="meal_of_day" class="form-select mb-2" aria-label="Default select example">
-                    <option selected disabled hidden></option>
-                    <option value="1">Ingredient 1</option>
-                    <option value="2">Ingredient 2</option>
-                    <option value="3">Ingredient 3</option>
-                  </select>
-                  <div class="row">
-                    <div class="col-8">
-                      <label for="quantity" class="form-label">Quantity:</label>
-                      <input type="number" name="title" value="" class="form-control">
-                    </div>
-                    <div class="col-4">
-                      <label for="unit" class="form-label">Unit:</label>
-                      <select name="meal_of_day" class="form-select" aria-label="Default select example">
-                        <option selected disabled hidden></option>
-                        <option value="1">cup</option>
-                        <option value="2">ml</option>
-                        <option value="3">g</option>
-                      </select>
-                    </div>
-                  </div>
-
-                </div>
-
-              </div>
-            </div>
-
-
-
-          </div>
-
-
-
-          <div class="d-flex justify-content-end">
-            <button class="btn btn-success">Submit</button>
-          </div>
         </form>
 
+
+        <div class="col-6">
+          <div class="row">
+            <div class="col-6">
+              <form action="/add_ingredient" method="post">
+                <label>Required Ingredients:</label>
+
+                <ul id="ingredientsList">
+                  {% if recipe.ingredients %}
+                  {% for ingredient in recipe.ingredients %}
+                  <li>{{ingredient.name}} - {{ingredient.quantity}} {{ingredient.unit}}</li>
+                  {%endfor%}
+                  {%endif%}
+                </ul>
+            </div>
+            <div class="col-6">
+              <label for="id" class="form-label">Ingredient:</label>
+              <select name="id" class="form-select mb-2" aria-label="Default select example">
+                <option selected disabled hidden>Select</option>
+                {% for ingredient in ingredients %}
+                <option value="{{ ingredient.id }}" ingredientId="{{ingredient.id}}">{{ ingredient.name }}
+                </option>
+                {% endfor %}
+              </select>
+              <div class="row">
+                <div class="col-8">
+                  <label for="quantity" class="form-label">Quantity:</label>
+                  <input type="number" name="quantity" value="" class="form-control">
+                </div>
+                <div class="col-4">
+                  <label for="unit" class="form-label">Unit:</label>
+                  <select name="unit" class="form-select" aria-label="Default select example">
+                    <option selected disabled hidden></option>
+                    <option value="cup">cup</option>
+                    <option value="ml">ml</option>
+                    <option value="g">g</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <button class="btn btn-primary float-end mt-2" id="ingredients-btn">Add Ingredient</button>
+              </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+        <div class="mt-2">
+          <a href="/dashboard" class="btn btn-secondary btn-lg">Back Home</a>
+          <div>
+
+            <label class="form-label">* Update your recipe before returnig to home page if you wish to save changes.
+            </label>
+          </div>
+        </div>
 
       </div>
 
@@ -248,7 +261,15 @@
 
 
 
+
+
     </div>
+
+
+
+
+
+  </div>
 
   </div>
 

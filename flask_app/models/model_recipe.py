@@ -112,6 +112,7 @@ class Recipe:
       }
       user_instance = model_user.User(user_data)
       recipe_instance.user = user_instance
+      recipe_instance.ingredients = cls.get_recipe_ingredients(id)
     return recipe_instance
 
 #update
