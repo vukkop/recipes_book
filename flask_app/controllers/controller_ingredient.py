@@ -41,3 +41,17 @@ def delete_ingredient(id):
   Ingredient.delete(id)
   return redirect("/ingredients")
 
+@app.route("/recipe/edit/<int:recipe_id>/ingredient/<int:ingredient_id>/remove")
+def remove_ingredient_edit(recipe_id, ingredient_id):
+  if 'user_id' not in session:
+    return redirect("/")
+  Ingredient.remove(recipe_id, ingredient_id)
+  return redirect(f"/recipe/edit/{recipe_id}")
+
+@app.route("/recipe/new/<int:recipe_id>/ingredient/<int:ingredient_id>/remove")
+def remove_ingredient_new(recipe_id, ingredient_id):
+  if 'user_id' not in session:
+    return redirect("/")
+  Ingredient.remove(recipe_id, ingredient_id)
+  return redirect(f"/recipe/new")
+

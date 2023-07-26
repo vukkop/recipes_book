@@ -86,7 +86,7 @@
         <form action="/recipe/create" method="post">
 
           <div class="row">
-            <div class="col-6">
+            <div class="col-5">
               <div class="mb-2">
                 <label for="title" class="form-label">Title:</label>
                 <input type="text" value="{{recipe.title}}" name="title" class="form-control">
@@ -202,23 +202,40 @@
 
       </div>
 
-      <div class="col-6">
+      <div class="col-7">
         <div class="row">
           <div class="col-6">
             {% if session['recipe_id'] %}
             <form action="/add_ingredient" method="post">
-              <label>Required Ingredients:</label>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Ingredients</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Unit</th>
+                    <th scope="col">Remove</th>
+                  </tr>
+                </thead>
+                <tbody>
 
-              <ul id="ingredientsList">
-                {% if recipe.ingredients %}
-                {% for ingredient in recipe.ingredients %}
-                <li>{{ingredient.name}} - {{ingredient.quantity}} {{ingredient.unit}}</li>
-                {%endfor%}
-                {%endif%}
-              </ul>
-
+                  {% if recipe.ingredients %}
+                  {% for ingredient in recipe.ingredients %}
+                  <tr class="">
+                    <td>{{ingredient.name}}</td>
+                    <td class="text-center">{{ingredient.quantity}}</td>
+                    <td class="text-center">{{ingredient.unit}}</td>
+                    <td class="text-center">
+                      <a href="/recipe/new/{{recipe.id}}/ingredient/{{ingredient.id}}/remove">
+                        <i class="fa-solid fa-xmark text-danger me-2 pt-1"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  {%endfor%}
+                  {%endif%}
+                </tbody>
+              </table>
           </div>
-          <div class="col-6">
+          <div class="col-5">
 
             <label for="id" class="form-label">Ingredient:</label>
             <select name="id" id="ingredient" class="form-select mb-2" aria-label="Default select example">
@@ -253,30 +270,18 @@
 
         </div>
       </div>
-      <div class="text-center mt-2">
+      <div class="text-center mt-1">
         {% if session['recipe_id'] %}
         <a href="/dashboard" class="btn btn-success btn-lg"> SAVE ALL</a>
         {%endif%}
       </div>
 
-
-
     </div>
 
 
-
-
-
-
-
   </div>
 
-
-
-
-
   </div>
-
   </div>
 
   <script src="https://kit.fontawesome.com/e71eff5305.js" crossorigin="anonymous">

@@ -65,6 +65,20 @@ def add_ingredient():
 
   return redirect("/recipe/new")
 
+@app.route("/edit/add_ingredient", methods = ["POST"])
+def add_ingredient_edit():
+  ing = Ingredient.get_by_id(request.form["id"])
+  data = {
+          "id": ing.id,
+          "name": ing.name,
+          "quantity": request.form["quantity"],
+          "unit": request.form["unit"],
+          "recipe_id" : session["recipe_id"]
+          }
+  Recipe.add_ingredient(data)
+
+  return redirect(f"/recipe/edit/{session['recipe_id']}")
+
 
 #read
 @app.route("/recipe/show/<int:id>")

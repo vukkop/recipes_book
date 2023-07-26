@@ -87,7 +87,7 @@
         <h3>Edit:</h3>
         <form action="/recipe/{{recipe.id}}/update" method="post">
           <div class="row">
-            <div class="col-6">
+            <div class="col-5">
               <div class="mb-2">
                 <label for="title" class="form-label">Title:</label>
                 <input type="text" name="title" value="{{recipe.title}}" class="form-control">
@@ -199,21 +199,39 @@
         </form>
 
 
-        <div class="col-6">
+        <div class="col-7">
           <div class="row">
-            <div class="col-6">
-              <form action="/add_ingredient" method="post">
-                <label>Required Ingredients:</label>
+            <div class="col-7">
+              <form action="/edit/add_ingredient" method="post">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">Ingredients</th>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Unit</th>
+                      <th scope="col">Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
 
-                <ul id="ingredientsList">
-                  {% if recipe.ingredients %}
-                  {% for ingredient in recipe.ingredients %}
-                  <li>{{ingredient.name}} - {{ingredient.quantity}} {{ingredient.unit}}</li>
-                  {%endfor%}
-                  {%endif%}
-                </ul>
+                    {% if recipe.ingredients %}
+                    {% for ingredient in recipe.ingredients %}
+                    <tr class="">
+                      <td>{{ingredient.name}}</td>
+                      <td class="text-center">{{ingredient.quantity}}</td>
+                      <td class="text-center">{{ingredient.unit}}</td>
+                      <td class="text-center">
+                        <a href="/recipe/edit/{{recipe.id}}/ingredient/{{ingredient.id}}/remove">
+                          <i class="fa-solid fa-xmark text-danger me-2 pt-1"></i>
+                        </a>
+                      </td>
+                    </tr>
+                    {%endfor%}
+                    {%endif%}
+                  </tbody>
+                </table>
             </div>
-            <div class="col-6">
+            <div class="col-5">
               <label for="id" class="form-label">Ingredient:</label>
               <select name="id" class="form-select mb-2" aria-label="Default select example">
                 <option selected disabled hidden>Select</option>

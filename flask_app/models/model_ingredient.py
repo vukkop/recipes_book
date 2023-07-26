@@ -29,6 +29,11 @@ class Ingredient:
     return connectToMySQL(DB).query_db(query, {'id':id})
 
   @classmethod
+  def remove(cls, recipe_id, ingredient_id):
+    query = "DELETE FROM recipes_has_ingredients WHERE (recipe_id = %(recipe_id)s) and (ingredient_id = %(ingredient_id)s);;"
+    return connectToMySQL(DB).query_db(query, {'recipe_id': recipe_id,'ingredient_id': ingredient_id})
+
+  @classmethod
   def get_by_id(cls, id):
     query = "SELECT * FROM ingredients WHERE id = %(id)s"
     results = connectToMySQL(DB).query_db(query, {'id': id})
