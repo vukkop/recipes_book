@@ -104,10 +104,11 @@
 
 
               <a href="/recipe/show/{{recipe.id}}" class="btn btn-primary"><i class="fa-solid fa-eye"></i></a>
+              {%if session['user_id'] == recipe.user.id%}
               <a href="/recipe/edit/{{recipe.id}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"
                   style="color: white;"></i></a>
               <a href="/recipe/{{recipe.id}}/delete" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
-
+              {%endif%}
             </div>
           </div>
         </div>

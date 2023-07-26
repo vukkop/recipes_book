@@ -3,7 +3,7 @@ from flask import render_template,redirect,request,session
 from flask_app.models.model_user import User
 from flask_app.models.model_ingredient import Ingredient
 from flask_app.models.model_recipe import Recipe
-import cloudinary
+
 
 #create
 @app.route("/recipe/new")
