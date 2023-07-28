@@ -11,6 +11,7 @@ class Ingredient:
     self.created_at = data['created_at']
     self.updated_at = data['updated_at']
 
+
   @classmethod
   def save(cls, data):
     query = """INSERT INTO ingredients (name)
@@ -49,29 +50,3 @@ class Ingredient:
       WHERE id = %(id)s;"""
     return connectToMySQL(DB).query_db( query, data)
 
-
-  @staticmethod
-  def validate_create(data):
-    is_valid = True
-
-    if len(data['name']) < 1:
-      flash("Please fill in name for the recipe", "err_name")
-      is_valid = False
-
-    if len(data['description']) < 1:
-      flash("Please fill in description for the recipe.", "err_description")
-      is_valid = False
-
-    if len(data['instructions']) < 1:
-      flash("Please fill in instructions for the recipe.", "err_instructions")
-      is_valid = False
-
-    if len(data['date_made']) < 1:
-      flash("Please fill in date you made the dish.", "err_date_made")
-      is_valid = False
-
-    if 'under_30' not in data:
-      flash("Please select one of the options.", "err_under_30")
-      is_valid = False
-
-    return is_valid

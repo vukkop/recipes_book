@@ -2,6 +2,7 @@ from flask_app import app, bcrypt
 from flask import render_template,redirect,request,session
 from flask_app.models.model_user import User
 from flask_app.models.model_recipe import Recipe
+from flask_app.models.model_shopping_list import Shopping_List
 
 #create
 @app.route("/users/create", methods = ["POST"])
@@ -17,6 +18,7 @@ def create():
   data['password'] = hash_pw
   user_id = User.save(data)
   session['user_id'] = user_id
+  Shopping_List.save(user_id)
   return redirect("/dashboard")
 
 #read
